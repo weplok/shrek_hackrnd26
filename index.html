@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Болото Шрека</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Лендинг о Шреке: болото, слои, друзья и все фильмы франшизы.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ruslan+Display&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=PT+Mono&display=swap">
+<style>
+/* Layout: a walk into the swamp — a wooden-sign hero, a peelable onion, a row of neighbours, and a ledger of films. */
+:root {
+  --bg: #e6ead2;          /* pale bog moss */
+  --surface: #f2f3e4;     /* dry reed */
+  --fg: #23301a;          /* deep peat */
+  --muted: #5b6a49;       /* lichen */
+  --ogre: #7aa02c;        /* ogre skin */
+  --ogre-deep: #4d6b14;
+  --wood: #7a5230;        /* signpost plank */
+  --wood-fg: #f5ead2;
+  --onion: #b0618c;       /* red onion */
+  --line: #c7cdaa;
+  --font-display: "Ruslan Display", "Georgia", serif;
+  --font-body: "Literata", "Georgia", "Times New Roman", serif;
+  --font-mono: "PT Mono", ui-monospace, "Courier New", monospace;
+  --step-0: 1.0625rem;
+  --step-1: 1.35rem;
+  --step-2: 1.9rem;
+  --step-3: clamp(2.4rem, 7vw, 4.6rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141a10; --surface: #1d2617; --fg: #e3e8cf; --muted: #9caa84;
+    --ogre: #9cc548; --ogre-deep: #b9dc6c; --wood: #8a6038; --wood-fg: #fbf0d8;
+    --onion: #d68ab2; --line: #33402a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141a10; --surface: #1d2617; --fg: #e3e8cf; --muted: #9caa84;
+  --ogre: #9cc548; --ogre-deep: #b9dc6c; --wood: #8a6038; --wood-fg: #fbf0d8;
+  --onion: #d68ab2; --line: #33402a; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 var(--step-0)/1.65 var(--font-body);
+}
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.1; text-wrap: balance; margin: 0; }
+h2 { font-size: var(--step-2); }
+p { margin: 0; max-width: 62ch; }
+.label {
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+a { color: var(--ogre-deep); }
+:focus-visible { outline: 3px solid var(--onion); outline-offset: 3px; }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+#fireflies { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.hero .wrap {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 40px;
+  padding-block: 56px 64px;
+}
+.hero-copy { display: grid; gap: 22px; min-width: 0; }
+.hero h1 { font-size: var(--step-3); color: var(--ogre-deep); }
+.hero h1 span { display: block; color: var(--fg); font-size: .45em; margin-top: .35em; }
+.hero p { font-size: var(--step-1); line-height: 1.5; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: .95rem;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  border: 2px solid var(--fg);
+  color: var(--fg);
+  background: transparent;
+  cursor: pointer;
+  transition: transform .15s ease, background .15s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn.primary { background: var(--ogre); border-color: var(--ogre); color: #10170a; }
+
+/* Signpost */
+.sign { justify-self: center; display: grid; justify-items: center; width: min(100%, 360px); }
+.plank {
+  width: 100%;
+  background: var(--wood);
+  color: var(--wood-fg);
+  font-family: var(--font-display);
+  text-align: center;
+  padding: 22px 18px;
+  border-radius: 6px 10px 5px 12px;
+  box-shadow: inset 0 -6px 0 rgba(0,0,0,.18), 0 10px 24px rgba(0,0,0,.18);
+  transform: rotate(-4deg);
+  background-image: repeating-linear-gradient(0deg, rgba(0,0,0,.08) 0 2px, transparent 2px 13px);
+}
+.plank + .plank { transform: rotate(3deg); margin-top: 10px; width: 88%; }
+.plank strong { display: block; font-size: 1.9rem; font-weight: 400; letter-spacing: .04em; }
+.plank small { display: block; font-family: var(--font-mono); font-size: .8rem; letter-spacing: .1em; margin-top: 6px; opacity: .9; }
+.post { width: 22px; height: 120px; background: var(--wood); filter: brightness(.8); border-radius: 0 0 4px 4px; }
+
+/* ---------- Sections ---------- */
+section { padding-block: 72px; }
+.section-head { display: grid; gap: 10px; margin-bottom: 36px; }
+
+/* Onion */
+.onion-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+}
+.onion-stage { display: grid; place-items: center; }
+.onion {
+  position: relative;
+  width: min(100%, 340px);
+  aspect-ratio: 1;
+  max-width: 100%;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+.layer {
+  position: absolute;
+  border-radius: 50% 50% 48% 48% / 56% 56% 44% 44%;
+  transition: transform .45s cubic-bezier(.3,1.4,.5,1), opacity .35s ease;
+  display: grid;
+  place-items: center;
+}
+.layer.peeled { transform: scale(1.25) rotate(14deg); opacity: 0; pointer-events: none; }
+.core {
+  font-family: var(--font-display);
+  color: var(--wood-fg);
+  font-size: 1.1rem;
+  text-align: center;
+  line-height: 1.2;
+  padding: 10px;
+}
+.onion-text { display: grid; gap: 18px; min-width: 0; }
+.quote {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1.35;
+  color: var(--ogre-deep);
+}
+.layer-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 20px 22px;
+  display: grid;
+  gap: 6px;
+  min-height: 140px;
+}
+.layer-card h3 { font-size: 1.3rem; }
+.layer-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.counter { font-family: var(--font-mono); font-size: .9rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Neighbours */
+.cast {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border-top: 2px solid var(--fg);
+}
+.cast article {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 8px;
+  padding: 24px 22px 26px;
+  border-bottom: 1px solid var(--line);
+}
+.cast article:not(:nth-child(3n)) { border-right: 1px solid var(--line); }
+.cast h3 { font-size: 1.35rem; }
+.cast .role { font-family: var(--font-mono); font-size: .8rem; color: var(--onion); letter-spacing: .06em; }
+.cast .line { font-style: italic; color: var(--muted); font-size: .95rem; }
+
+/* Films ledger */
+.ledger-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 560px; }
+th, td { text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-mono); font-weight: 400; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); border-bottom: 2px solid var(--fg); }
+td.year { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ogre-deep); white-space: nowrap; }
+td.title { font-family: var(--font-display); font-size: 1.1rem; }
+tr.upcoming td { color: var(--muted); }
+.badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .08em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--onion);
+  color: var(--onion);
+  white-space: nowrap;
+}
+
+/* Rules of the swamp */
+.rules {
+  background: var(--wood);
+  color: var(--wood-fg);
+  background-image: repeating-linear-gradient(0deg, rgba(0,0,0,.07) 0 2px, transparent 2px 15px);
+}
+.rules h2 { color: var(--wood-fg); }
+.rules .label { color: var(--wood-fg); opacity: .8; }
+.rules ol { margin: 0; padding: 0; list-style: none; counter-reset: r; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 40px; }
+.rules li { counter-increment: r; display: grid; grid-template-columns: 2.4rem 1fr; gap: 12px; align-items: baseline; font-size: 1.05rem; }
+.rules li::before { content: counter(r) "."; font-family: var(--font-display); font-size: 1.6rem; }
+
+footer { padding-block: 36px 48px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; color: var(--muted); font-size: .9rem; }
+
+@media (max-width: 760px) {
+  .hero .wrap, .onion-grid { grid-template-columns: minmax(0, 1fr); }
+  .sign { order: -1; width: min(100%, 280px); }
+  .post { height: 60px; }
+  .cast { grid-template-columns: minmax(0, 1fr); }
+  .cast article:not(:nth-child(3n)) { border-right: 0; }
+  .rules ol { grid-template-columns: minmax(0, 1fr); }
+  section { padding-block: 52px; }
+}
+@media (min-width: 761px) and (max-width: 960px) {
+  .cast { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cast article:not(:nth-child(3n)) { border-right: 0; }
+  .cast article:nth-child(odd) { border-right: 1px solid var(--line); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .layer, .btn { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <canvas id="fireflies" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="label">Тридевятое королевство · болото, 1 шт.</span>
+      <h1>Шрек<span>Огр, который просто хотел тишины</span></h1>
+      <p>Зелёный, ворчливый и с ушами-трубочками. Живёт на болоте, моется грязью и терпеть не может незваных гостей. А потом в его жизнь вваливается говорящий осёл, и всё идёт наперекосяк.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="#layers">Узнать про слои</a>
+        <a class="btn" href="#films">Смотреть по порядку</a>
+      </div>
+    </div>
+    <div class="sign" aria-label="Табличка у болота">
+      <div class="plank"><strong>Осторожно, огр!</strong><small>Частная собственность</small></div>
+      <div class="plank"><strong>Не подходи</strong><small>Это моё болото</small></div>
+      <div class="post"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="layers">
+    <div class="wrap onion-grid">
+      <div class="onion-stage">
+        <button class="onion" id="onion" type="button" aria-label="Снять слой с луковицы"></button>
+      </div>
+      <div class="onion-text">
+        <span class="label">Огры как лук</span>
+        <p class="quote">«У огров есть слои. У лука есть слои. Понимаешь? У нас обоих есть слои».</p>
+        <div class="layer-card" aria-live="polite">
+          <span class="label" id="layer-label">Слой 1 из 5</span>
+          <h3 id="layer-title">Снаружи</h3>
+          <p id="layer-text">Зелёная кожа, громкий рык и табличка «Не подходи». Большинство до этого слоя и не добирается.</p>
+        </div>
+        <div class="layer-controls">
+          <button class="btn primary" id="peel" type="button">Снять слой</button>
+          <button class="btn" id="reset" type="button">Собрать луковицу</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="friends" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">Соседи по сказке</span>
+        <h2>Кто стучится на болото</h2>
+      </div>
+      <div class="cast">
+        <article>
+          <span class="role">Лучший друг</span>
+          <h3>Осёл</h3>
+          <p>Болтает без остановки, поёт без спроса и остаётся, даже когда его гонят. Именно поэтому он и друг.</p>
+          <p class="line">«Мы уже приехали?»</p>
+        </article>
+        <article>
+          <span class="role">Принцесса и жена</span>
+          <h3>Фиона</h3>
+          <p>Днём принцесса, ночью огр. Умеет драться, петь и выбирать то, что ей по душе, а не по сказке.</p>
+          <p class="line">Поцелуй истинной любви сработал наоборот.</p>
+        </article>
+        <article>
+          <span class="role">Наёмник в отставке</span>
+          <h3>Кот в сапогах</h3>
+          <p>Пришёл убить Шрека, остался дружить. Главное оружие: огромные глаза в нужный момент.</p>
+          <p class="line">Получил два собственных фильма.</p>
+        </article>
+        <article>
+          <span class="role">Злодей ростом пониже</span>
+          <h3>Лорд Фаркуад</h3>
+          <p>Правитель Дюлока. Выселил сказочных героев на болото Шрека и тем самым запустил всю историю.</p>
+          <p class="line">«Некоторые из вас могут погибнуть…»</p>
+        </article>
+        <article>
+          <span class="role">Охрана башни</span>
+          <h3>Дракониха</h3>
+          <p>Сторожила Фиону в замке, а в итоге влюбилась в Осла. Позже у них появились дракослики.</p>
+          <p class="line">Огнедышащая и очень романтичная.</p>
+        </article>
+        <article>
+          <span class="role">Маленький, но гордый</span>
+          <h3>Пряня</h3>
+          <p>Пряничный человечек, переживший допрос у Фаркуада. Без пуговок не сдаётся.</p>
+          <p class="line">«Только не мои пуговки!»</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="films" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">Хронология DreamWorks</span>
+        <h2>Все фильмы по порядку</h2>
+      </div>
+      <div class="ledger-scroll">
+        <table>
+          <thead>
+            <tr><th>Год</th><th>Фильм</th><th>О чём</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="year">2001</td><td class="title">Шрек</td><td>Шрек спасает принцессу ради возвращения своего болота. Первый «Оскар» в истории за лучший анимационный полнометражный фильм.</td></tr>
+            <tr><td class="year">2004</td><td class="title">Шрек 2</td><td>Знакомство с родителями Фионы в королевстве Далёкое-Далёкое, Фея-Крёстная и дебют Кота в сапогах.</td></tr>
+            <tr><td class="year">2007</td><td class="title">Шрек Третий</td><td>Шреку предлагают трон, а он ищет наследника и готовится стать отцом.</td></tr>
+            <tr><td class="year">2010</td><td class="title">Шрек навсегда</td><td>Сделка с Румпельштильцхеном переносит Шрека в мир, где его никогда не было.</td></tr>
+            <tr><td class="year">2011</td><td class="title">Кот в сапогах</td><td>Спин-офф о прошлом Кота: Шалтай-Болтай, волшебные бобы и золотые яйца.</td></tr>
+            <tr><td class="year">2022</td><td class="title">Кот в сапогах 2: Последнее желание</td><td>У Кота осталась последняя жизнь, и за ним идёт сам Волк.</td></tr>
+            <tr class="upcoming"><td class="year">2027</td><td class="title">Шрек 5</td><td>Возвращение на болото после долгого перерыва. <span class="badge">Ожидается</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="rules">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">Висит у входа</span>
+        <h2>Правила болота</h2>
+      </div>
+      <ol>
+        <li>Стучать необязательно. Уходить обязательно.</li>
+        <li>Свечи из ушной серы не трогать, они для ужина.</li>
+        <li>Грязевые ванны строго по утрам.</li>
+        <li>Ослам вход запрещён. Ну ладно, одному можно.</li>
+        <li>Судить по внешности запрещено. Это главное правило.</li>
+        <li>Сказочных героев не селить без согласия владельца.</li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Фанатский лендинг. Шрек и все персонажи принадлежат DreamWorks Animation.</span>
+    <span class="label">shrek_hackrnd26</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Onion: five concentric layers, outermost first
+  var layers = [
+    { t: "Снаружи", d: "Зелёная кожа, громкий рык и табличка «Не подходи». Большинство до этого слоя и не добирается.", c: "#7aa02c" },
+    { t: "Сарказм", d: "Шутит, чтобы никто не подошёл слишком близко. Работает почти на всех, кроме Осла.", c: "#8f7a3a" },
+    { t: "Обида", d: "Всю жизнь люди видели в нём чудовище с вилами наготове. Проще было поверить им и спрятаться.", c: "#a0655e" },
+    { t: "Верность", d: "Если ты его друг, он пойдёт за тебя в замок к дракону. Неохотно, но пойдёт.", c: "#b0618c" },
+    { t: "Сердце", d: "Огр, который хочет, чтобы его просто приняли таким, какой он есть. Как и все мы.", c: "#7a5230" }
+  ];
+  var onion = document.getElementById("onion");
+  var els = layers.map(function (l, i) {
+    var el = document.createElement("div");
+    el.className = "layer";
+    var inset = i * 10;
+    el.style.inset = inset + "%";
+    el.style.background = "radial-gradient(circle at 35% 30%, rgba(255,255,255,.28), transparent 55%), " + l.c;
+    el.style.boxShadow = "0 6px 18px rgba(0,0,0,.18)";
+    if (i === layers.length - 1) el.innerHTML = '<span class="core">Просто<br>огр</span>';
+    onion.appendChild(el);
+    return el;
+  });
+  // outermost layer must sit on top
+  els.forEach(function (el, i) { el.style.zIndex = String(layers.length - i); });
+  var peeled = 0;
+  var label = document.getElementById("layer-label");
+  var title = document.getElementById("layer-title");
+  var text = document.getElementById("layer-text");
+  var peelBtn = document.getElementById("peel");
+  function render() {
+    els.forEach(function (el, i) { el.classList.toggle("peeled", i < peeled); });
+    var l = layers[peeled];
+    label.textContent = "Слой " + (peeled + 1) + " из " + layers.length;
+    title.textContent = l.t;
+    text.textContent = l.d;
+    peelBtn.disabled = peeled >= layers.length - 1;
+    peelBtn.textContent = peelBtn.disabled ? "Это последний слой" : "Снять слой";
+  }
+  function peel() { if (peeled < layers.length - 1) { peeled++; render(); } }
+  onion.addEventListener("click", peel);
+  peelBtn.addEventListener("click", peel);
+  document.getElementById("reset").addEventListener("click", function () { peeled = 0; render(); });
+  render();
+
+  // Fireflies over the swamp
+  var canvas = document.getElementById("fireflies");
+  var ctx = canvas.getContext("2d");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var flies = [];
+  function size() {
+    var r = canvas.getBoundingClientRect();
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = r.width * dpr; canvas.height = r.height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    flies = [];
+    var n = Math.round(r.width / 40);
+    for (var i = 0; i < n; i++) flies.push({ x: Math.random() * r.width, y: Math.random() * r.height, a: Math.random() * 6.28, s: .2 + Math.random() * .4, p: Math.random() * 6.28 });
+  }
+  function draw(t) {
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+    flies.forEach(function (f) {
+      if (!reduce) {
+        f.a += (Math.random() - .5) * .2;
+        f.x = (f.x + Math.cos(f.a) * f.s + w) % w;
+        f.y = (f.y + Math.sin(f.a) * f.s + h) % h;
+      }
+      var glow = .35 + .35 * Math.sin(t / 600 + f.p);
+      var g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, 10);
+      g.addColorStop(0, "rgba(214, 232, 96," + glow + ")");
+      g.addColorStop(1, "rgba(214, 232, 96, 0)");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(f.x, f.y, 10, 0, 6.28); ctx.fill();
+    });
+    if (!reduce) requestAnimationFrame(draw);
+  }
+  size();
+  window.addEventListener("resize", size);
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
