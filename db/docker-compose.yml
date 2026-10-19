@@ -1,3 +1,4 @@
+name: hack-db
 services:
   db:
     image: postgres:16
