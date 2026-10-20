@@ -219,6 +219,35 @@ tr.upcoming td { color: var(--muted); }
   white-space: nowrap;
 }
 
+/* Stories form */
+.story-form { max-width: 720px; }
+.story-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 20px 22px;
+  display: grid;
+  gap: 12px;
+}
+.story-card textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 160px;
+  padding: 14px 16px;
+  border: 2px solid var(--line);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 var(--step-0)/1.6 var(--font-body);
+}
+.story-card textarea:focus-visible { outline: 3px solid var(--onion); outline-offset: 2px; }
+.story-meta { display: flex; justify-content: flex-end; }
+.story-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 16px; }
+.story-status { font-family: var(--font-mono); font-size: .9rem; color: var(--muted); }
+.story-status.ok { color: var(--ogre-deep); }
+.story-status.err { color: var(--onion); }
+.btn[disabled] { opacity: .55; cursor: wait; transform: none; }
+
 /* Rules of the swamp */
 .rules {
   background: var(--wood);
@@ -369,6 +398,29 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
     </div>
   </section>
 
+  <section id="stories" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">Почта болота</span>
+        <h2>Расскажи свою историю</h2>
+      </div>
+      <form class="story-form" id="story-form" novalidate>
+        <div class="story-card">
+          <label class="label" for="story-text">Как Шрек изменил твою жизнь (или хотя бы вечер)</label>
+          <textarea id="story-text" name="story" rows="8" maxlength="10000" required
+            placeholder="Например: смотрел «Шрека» каждый вечер перед экзаменом и сдал всё, кроме осла…"></textarea>
+          <div class="story-meta">
+            <span class="counter" id="story-count">0 / 10000</span>
+          </div>
+        </div>
+        <div class="story-actions">
+          <button class="btn primary" id="story-submit" type="submit">Отправить на болото</button>
+          <span class="story-status" id="story-status" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
   <section class="rules">
     <div class="wrap">
       <div class="section-head">
@@ -473,6 +525,50 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
   size();
   window.addEventListener("resize", size);
   requestAnimationFrame(draw);
+
+  // Stories: send plaintext to the swamp server
+  var form = document.getElementById("story-form");
+  var textarea = document.getElementById("story-text");
+  var countEl = document.getElementById("story-count");
+  var statusEl = document.getElementById("story-status");
+  var submitBtn = document.getElementById("story-submit");
+
+  function setStatus(msg, cls) {
+    statusEl.textContent = msg;
+    statusEl.className = "story-status" + (cls ? " " + cls : "");
+  }
+
+  textarea.addEventListener("input", function () {
+    countEl.textContent = textarea.value.length + " / 10000";
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var story = textarea.value.trim();
+    if (!story) { setStatus("Осёл считает, что история пустая. Напиши хоть что-нибудь.", "err"); return; }
+    submitBtn.disabled = true;
+    setStatus("Отправляем…");
+    fetch("/api/stories", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ story: story })
+    })
+      .then(function (res) {
+        if (!res.ok) return res.json().then(function (d) { throw new Error(d.detail || "Ошибка сервера"); });
+        return res.json();
+      })
+      .then(function (data) {
+        setStatus("Готово! История лежит на болоте: " + data.file, "ok");
+        textarea.value = "";
+        countEl.textContent = "0 / 10000";
+      })
+      .catch(function (err) {
+        setStatus("Не долетело: " + err.message, "err");
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+      });
+  });
 })();
 </script>
 </body>
